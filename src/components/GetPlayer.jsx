@@ -14,7 +14,7 @@ function GetPlayer() {
         const options = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': 'b4545e6103msh10a075151893746p12e9dejsn0bddcd8c4d72',
+
                 'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
             }
         };
