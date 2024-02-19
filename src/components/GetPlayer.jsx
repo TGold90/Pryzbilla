@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import GuessInput from './GuessInput';
+
 
 function GetPlayer() {
     const [playerInfo, setPlayerInfo] = useState(null);
@@ -8,6 +10,24 @@ function GetPlayer() {
     function getRandomId(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+    const handleGuess = (char) => {
+        if (!playerInfo) return;
+
+        const fullName = `${playerInfo.First} ${playerInfo.Last}`.toUpperCase();
+        let newDisplayedName = '';
+
+        for (let i = 0; i < fullName.length; i++) {
+            if (fullName[i] === char) {
+                newDisplayedName += char;
+            } else if (displayedName[i] !== '_') {
+                newDisplayedName += displayedName[i];
+            } else {
+                newDisplayedName += '_';
+            }
+        }
+
+        setDisplayedName(newDisplayedName);
+    };
 
     const fetchData = async () => {
         const randomId = getRandomId(1, 4083);
@@ -22,7 +42,7 @@ function GetPlayer() {
 
         try {
             const response = await fetch(url, options);
-            const result = await response.json(); // Assuming the response is JSON
+            const result = await response.json();
             if (result.results > 0) {
                 const playerData = result.response[0];
                 console.log(playerData)
@@ -51,8 +71,8 @@ function GetPlayer() {
     return (
         <div>
             <button onClick={fetchData}>Start game!!</button>
+            {playerInfo && <GuessInput onGuess={handleGuess} />}
             {displayedName && <div className="displayName">{displayedName.split('').map((char, index) => <span key={index}>{char} </span>)}</div>}
-            {playerInfo && <div>{playerInfo.Name}</div>}
             {error && <div>Error: {error.message}</div>}
         </div>
     );
